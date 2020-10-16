@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class FPSController : MonoBehaviour
 {
+    #region Parameters
     private float m_Yaw;
     private float m_Pitch;
     public CharacterController m_CharacterController;
@@ -35,6 +36,7 @@ public class FPSController : MonoBehaviour
     public bool m_OnGround = false;
     public bool m_AngleLocked = false;
     public bool m_AimLocked = true;
+    public bool m_IsMoving = false;
 
     [Header("Input")]
     public KeyCode m_LeftKeyCode;
@@ -54,6 +56,15 @@ public class FPSController : MonoBehaviour
     public float m_JumpThresholdSinceLastGround = 0.2f;
     public float m_FallMultiplier = 1.01f;
 
+    [Header("HeadBob Camera")]
+    public float m_frequency = 2.0f;
+    public float m_magnitude = 0.1f;
+    public float m_frequencyRun = 5.0f;
+    public float m_magnitudeRun = 1f;
+    private float m_DefaultCamPosY;
+
+    #endregion
+
     private void Awake()
     {
         m_CharacterController = GetComponent<CharacterController>();
@@ -65,6 +76,7 @@ public class FPSController : MonoBehaviour
         m_Pitch = m_PitchController.rotation.eulerAngles.x;
         m_VerticalSpeed = 0.0f;
         Cursor.lockState = CursorLockMode.Locked;
+        m_DefaultCamPosY = m_PitchController.transform.position.y;
     }
 
     void Update()
@@ -74,7 +86,7 @@ public class FPSController : MonoBehaviour
         float l_MouseAxisX = Input.GetAxis("Mouse X");
         float l_MouseAxisY = Input.GetAxis("Mouse Y");
 
-        //Invertir controles camera
+        #region Invertir controles camera
         if (m_InvertHorizontalAxis)
         {
             l_MouseAxisX = -l_MouseAxisX;
@@ -83,18 +95,21 @@ public class FPSController : MonoBehaviour
         {
             l_MouseAxisY = -l_MouseAxisY;
         }
+        #endregion
 
-        if (!m_AngleLocked)//if para clavar la camera si no queremos que se mueva
+        #region Clavar la camera si no queremos que se mueva
+        if (!m_AngleLocked)
         {
             m_Yaw = m_Yaw + l_MouseAxisX * m_YawRotationalSpeed * Time.deltaTime;
             m_Pitch = m_Pitch + l_MouseAxisY * m_PitchRotationalSpeed * Time.deltaTime;
             m_Pitch = Mathf.Clamp(m_Pitch, m_MinPitch, m_MaxPitch);
         }
+        #endregion
 
         transform.rotation = Quaternion.Euler(0.0f, m_Yaw, 0.0f);
         m_PitchController.localRotation = Quaternion.Euler(m_Pitch, 0.0f, 0.0f);
 
-
+        #region Sacar el mouse con la "O" para tocar el editor
 #if UNITY_EDITOR //If para sacar el mouse con la "O" para tocar el editor
         if (Input.GetKeyDown(m_DebugLockAngleKeyCode))
             m_AngleLocked = !m_AngleLocked;
@@ -107,7 +122,18 @@ public class FPSController : MonoBehaviour
             m_AimLocked = Cursor.lockState == CursorLockMode.Locked;
         }
 #endif
+        #endregion
 
+        #region HeadBob
+        if (m_IsMoving)
+        {
+            m_PitchController.transform.position = new Vector3(m_PitchController.transform.position.x, Mathf.Lerp(m_PitchController.transform.position.y, m_PitchController.transform.position.y + Mathf.Sin(Time.time * m_frequencyRun) * m_magnitudeRun, Time.deltaTime), m_PitchController.transform.position.z);
+        }
+        else
+        {
+            m_PitchController.transform.position = new Vector3(m_PitchController.transform.position.x, Mathf.Lerp(m_PitchController.transform.position.y, m_PitchController.transform.position.y + Mathf.Sin(Time.time * m_frequency) * m_magnitude, Time.deltaTime), m_PitchController.transform.position.z);
+        }
+        #endregion
 
         #endregion
 
@@ -189,6 +215,17 @@ public class FPSController : MonoBehaviour
 
         //Normalizamos para arreglar la velocidad de diagonal
         l_Movement.Normalize();
+
+        #region Bool IsMoving
+        if ((l_Movement.x != 0f || l_Movement.z != 0f) && m_OnGround == true)
+        {
+            m_IsMoving = true;
+        }
+        else
+        {
+            m_IsMoving = false;
+        }
+        #endregion
 
         #region Correr-Sprint      
         //Controlar si corremos o no

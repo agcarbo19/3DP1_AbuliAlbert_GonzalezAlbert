@@ -567,6 +567,7 @@ MonoBehaviour:
   m_OnGround: 0
   m_AngleLocked: 0
   m_AimLocked: 1
+  m_IsMoving: 0
   m_LeftKeyCode: 97
   m_RightKeyCode: 100
   m_UpKeyCode: 119
@@ -581,6 +582,10 @@ MonoBehaviour:
   m_TimeSinceLastGround: 0
   m_JumpThresholdSinceLastGround: 0.2
   m_FallMultiplier: 1.01
+  m_frequency: 2
+  m_magnitude: 0.1
+  m_frequencyRun: 10
+  m_magnitudeRun: 2
 --- !u!143 &629645372
 CharacterController:
   m_ObjectHideFlags: 0
@@ -607,7 +612,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629645370}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 61.07, y: 5.68, z: 11.75}
+  m_LocalPosition: {x: 61.07, y: 5.52, z: 11.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1170514165}
@@ -1094,7 +1099,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 986126571}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.677, z: 0.423}
+  m_LocalPosition: {x: 0, y: 1.7, z: 0.423}
   m_LocalScale: {x: 0.8, y: 0.9, z: 1}
   m_Children:
   - {fileID: 963194228}
