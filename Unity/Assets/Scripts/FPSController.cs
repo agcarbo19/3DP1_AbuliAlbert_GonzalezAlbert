@@ -46,18 +46,6 @@ public class FPSController : MonoBehaviour
     public KeyCode m_DebugLockAngleKeyCode = KeyCode.I;
     public KeyCode m_DebugLockKeyCode = KeyCode.O;
 
-    [Header("Shoot")]
-    public LayerMask m_ShootLayerMask;
-    public GameObject m_HitCollisionParticlesPrefab;
-    public float m_MaxDistance = 150.0f;
-    public LineRenderer m_BulletLine;
-
-    [Header("Weapon Animation")]
-    public Animation m_WeaponAnimation;
-    public AnimationClip m_IdleWeaponAnimation;
-    public AnimationClip m_ShootWeaponAnimation;
-    public AnimationClip m_ReloadWeaponAnimation;
-
     [Header("Jumping")]
     public bool isJumping;
     public float jumpTime;
@@ -240,53 +228,6 @@ public class FPSController : MonoBehaviour
         if (m_TimeSinceLastGround < m_JumpThresholdSinceLastGround)
             m_OnGround = true;
         #endregion
-
-        #region Disparar
-        if (Input.GetMouseButtonDown(0))
-        {
-            StartCoroutine(Shoot());
-        }
-        #endregion
-    }
-
-    IEnumerator Shoot()
-    {
-        //SetShootWeaponAnimation();
-        Ray l_Ray = m_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
-        RaycastHit l_RaycastHit;
-
-        if (Physics.Raycast(l_Ray, out l_RaycastHit, m_MaxDistance, m_ShootLayerMask.value))
-        {
-            m_BulletLine.SetPosition(0, gameObject.transform.position);
-            m_BulletLine.SetPosition(1, l_RaycastHit.point);
-            CreateShootHitParticle(l_RaycastHit.point, l_RaycastHit.normal);
-        }
-        else
-        {
-            m_BulletLine.SetPosition(0, gameObject.transform.position);
-            m_BulletLine.SetPosition(1, gameObject.transform.position + gameObject.transform.forward * 100f);
-        }
-
-        m_BulletLine.enabled = true;
-        yield return new WaitForSeconds(0.02f);
-        m_BulletLine.enabled = false;
-
-    }
-
-    private void CreateShootHitParticle(Vector3 Position, Vector3 Normal)
-    {
-        GameObject.Instantiate(m_HitCollisionParticlesPrefab, Position, Quaternion.LookRotation(Normal) * Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.value * 180.0f), m_GameController.m_DestroyObjects);
-    }
-
-    private void SetIdleWeaponAnimation()
-    {
-        m_WeaponAnimation.CrossFade(m_IdleWeaponAnimation.name);
-    }
-
-    void SetShootWeaponAnimation()
-    {
-        m_WeaponAnimation.CrossFade(m_ShootWeaponAnimation.name);
-        m_WeaponAnimation.CrossFadeQueued(m_IdleWeaponAnimation.name);
 
     }
 
