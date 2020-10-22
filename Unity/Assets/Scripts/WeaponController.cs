@@ -8,6 +8,8 @@ public class WeaponController : MonoBehaviour
     public float m_FireRate = 15.0f;
     public float m_ImpactForce = 30.0f;
     public float m_NextTimeToFire = 0.0f;
+    public int m_MaxMagSize = 30;
+    public int m_ActualBulletsInMag;
 
     public Camera m_Camera;
     public GameController m_GameController;
@@ -22,24 +24,42 @@ public class WeaponController : MonoBehaviour
     public float m_MaxDistance = 150.0f;
 
     [Header("Weapon Animation")]
-    public Animation m_WeaponAnimation;
-    public AnimationClip m_IdleWeaponAnimation;
-    public AnimationClip m_ShootWeaponAnimation;
-    public AnimationClip m_ReloadWeaponAnimation;
+    public Animator m_Animator;
+
+    [Header("Reloading")]
+    public KeyCode m_ReloadKey;
+
+    private void Start()
+    {
+        m_ActualBulletsInMag = m_MaxMagSize;
+    }
 
     void Update()
     {
         if (Input.GetMouseButton(0) && Time.time >= m_NextTimeToFire)
         {
             m_NextTimeToFire = Time.time + 1f / m_FireRate;
-            if (m_Player.GetAmmo() > 0)
+            if (m_ActualBulletsInMag > 0)
+            {
                 Shoot();
+            }
+            else
+            {
+                if (m_Player.GetAmmo() > 0)
+                    StartCoroutine(Reloading());
+            }
+        }
+
+        if (Input.GetKey(m_ReloadKey))
+        {
+            if (m_Player.GetAmmo() > 0 && m_ActualBulletsInMag < m_MaxMagSize)
+                StartCoroutine(Reloading());
         }
     }
 
     private void Shoot()
     {
-        //SetShootWeaponAnimation();
+        m_Animator.SetTrigger("IsShooting");
         Ray l_Ray = m_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
         RaycastHit l_RaycastHit;
         m_WeaponFlash.Play();
@@ -60,7 +80,26 @@ public class WeaponController : MonoBehaviour
             CreateShootHitParticle(l_RaycastHit.point, l_RaycastHit.normal, target != null, l_RaycastHit.transform.tag == "Terrain");
         }
 
-        m_Player.RemoveAmmo();
+        m_ActualBulletsInMag--;
+
+    }
+
+    IEnumerator Reloading()
+    {
+        m_Animator.SetBool("IsReloading", true);
+        yield return new WaitForSeconds(1.5f);
+        m_Animator.SetBool("IsReloading", false);
+        int l_nAmmo = m_MaxMagSize - m_ActualBulletsInMag;
+        if (l_nAmmo > m_Player.GetAmmo())
+        {
+            m_ActualBulletsInMag += m_Player.GetAmmo();
+            m_Player.RemoveAmmo(m_Player.GetAmmo());            
+        }
+        else
+        {
+            m_ActualBulletsInMag += l_nAmmo;
+            m_Player.RemoveAmmo(l_nAmmo);           
+        }
 
     }
 
@@ -83,16 +122,8 @@ public class WeaponController : MonoBehaviour
             }
         }
     }
-
-    private void SetIdleWeaponAnimation()
+    public int GetBullets()
     {
-        m_WeaponAnimation.CrossFade(m_IdleWeaponAnimation.name);
-    }
-
-    void SetShootWeaponAnimation()
-    {
-        m_WeaponAnimation.CrossFade(m_ShootWeaponAnimation.name);
-        m_WeaponAnimation.CrossFadeQueued(m_IdleWeaponAnimation.name);
-
+        return m_ActualBulletsInMag;
     }
 }

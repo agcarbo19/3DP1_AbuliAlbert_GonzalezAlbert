@@ -6,8 +6,11 @@ using TMPro;
 public class GameController : MonoBehaviour
 {
     public FPSController m_Player;
+    public WeaponController m_Weapon;
     public Transform m_DestroyObjects;
     public TextMeshProUGUI m_TextAmmo;
+    public TextMeshProUGUI m_TextLife;
+    public TextMeshProUGUI m_TextShield;
 
     private void Start()
     {
@@ -16,7 +19,9 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        m_TextAmmo.text = m_Player.GetAmmo().ToString();
+        m_TextAmmo.text = m_Weapon.GetBullets().ToString();
+        m_TextLife.text = m_Player.GetLife().ToString();
+        m_TextShield.text = m_Player.GetShield().ToString();
     }
 
 }

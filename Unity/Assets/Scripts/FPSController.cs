@@ -258,29 +258,53 @@ public class FPSController : MonoBehaviour
     }
 
     #region Item Functions
+    #region Get Set i Remove Life
     public void AddLife(int LifePoints)
     {
         m_Life += LifePoints;
     }
+    public int GetLife()
+    {
+        return m_Life;
+    }
+    public void RemoveLife(int LifePoints)
+    {
+        m_Life -= LifePoints;
+    }
+    #endregion
 
+    #region Get Set i Remove Ammo
     public void AddAmmo(int AmmoRounds)
     {
         m_Ammo += AmmoRounds;
     }
 
-    public void RemoveAmmo()
+    public void RemoveAmmo(int AmmoRounds)
     {
-        m_Ammo--;
+        m_Ammo -= AmmoRounds;
     }
 
     public int GetAmmo()
     {
         return m_Ammo;
     }
+    #endregion
 
+    #region Get Set i Remove Shield
     public void AddShield(int ShieldPoints)
     {
         m_Shield += ShieldPoints;
     }
+
+    public int GetShield()
+    {
+        return m_Shield;
+    }
+
+    public void RemoveShield(int ShieldPoints)
+    {
+        m_Shield -= ShieldPoints;
+    }
+    #endregion
     #endregion
 }
