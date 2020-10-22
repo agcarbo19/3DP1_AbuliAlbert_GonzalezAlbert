@@ -55,12 +55,12 @@ public class WeaponController : MonoBehaviour
                 l_RaycastHit.rigidbody.AddForce(-l_RaycastHit.normal * m_ImpactForce);
             }
 
-            CreateShootHitParticle(l_RaycastHit.point, l_RaycastHit.normal, target != null);
+            CreateShootHitParticle(l_RaycastHit.point, l_RaycastHit.normal, target != null, l_RaycastHit.transform.tag == "Terrain");
         }
 
     }
 
-    private void CreateShootHitParticle(Vector3 Position, Vector3 Normal, bool target)
+    private void CreateShootHitParticle(Vector3 Position, Vector3 Normal, bool target, bool terrain)
     {
         GameObject.Instantiate(m_HitCollisionParticlesPrefab, Position, Quaternion.LookRotation(Normal) * Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.value * 180.0f), m_GameController.m_DestroyObjects);
         if (target)
@@ -69,7 +69,14 @@ public class WeaponController : MonoBehaviour
         }
         else
         {
-            GameObject.Instantiate(m_SmokeImpact, Position, Quaternion.LookRotation(Normal) * Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.value * 180.0f), m_GameController.m_DestroyObjects);
+            if (terrain == false)
+            {
+                GameObject.Instantiate(m_ImpactEffect, Position, Quaternion.LookRotation(Normal) * Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.value * 180.0f), m_GameController.m_DestroyObjects);
+            }
+            else
+            {
+                GameObject.Instantiate(m_SmokeImpact, Position, Quaternion.LookRotation(Normal) * Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.value * 180.0f), m_GameController.m_DestroyObjects);
+            }
         }
     }
 
