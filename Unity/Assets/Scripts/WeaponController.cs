@@ -14,6 +14,7 @@ public class WeaponController : MonoBehaviour
     public ParticleSystem m_WeaponFlash;
     public GameObject m_SmokeImpact;
     public GameObject m_ImpactEffect;
+    public FPSController m_Player;
 
     [Header("Shoot")]
     public LayerMask m_ShootLayerMask;
@@ -31,7 +32,8 @@ public class WeaponController : MonoBehaviour
         if (Input.GetMouseButton(0) && Time.time >= m_NextTimeToFire)
         {
             m_NextTimeToFire = Time.time + 1f / m_FireRate;
-            Shoot();
+            if (m_Player.GetAmmo() > 0)
+                Shoot();
         }
     }
 
@@ -57,6 +59,8 @@ public class WeaponController : MonoBehaviour
 
             CreateShootHitParticle(l_RaycastHit.point, l_RaycastHit.normal, target != null, l_RaycastHit.transform.tag == "Terrain");
         }
+
+        m_Player.RemoveAmmo();
 
     }
 

@@ -75,4 +75,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Player: {fileID: 0}
-  m_DestroyObjects: {fileID: 4598543335537909670}
+  m_DestroyObjects: {fileID: 0}
+  m_TextAmmo: {fileID: 0}

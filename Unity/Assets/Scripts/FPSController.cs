@@ -268,6 +268,16 @@ public class FPSController : MonoBehaviour
         m_Ammo += AmmoRounds;
     }
 
+    public void RemoveAmmo()
+    {
+        m_Ammo--;
+    }
+
+    public int GetAmmo()
+    {
+        return m_Ammo;
+    }
+
     public void AddShield(int ShieldPoints)
     {
         m_Shield += ShieldPoints;
