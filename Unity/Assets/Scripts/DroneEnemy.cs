@@ -33,7 +33,6 @@ public class DroneEnemy : MonoBehaviour
     int m_CurrentWaypointId = 0;
 
     public Transform m_Eyes;
-    public float m_MaxDistanceToRaycast = 15f;
     public LayerMask m_SightLayerMask;
 
     private void Awake()
@@ -126,7 +125,10 @@ public class DroneEnemy : MonoBehaviour
     }
     void UpdateAttackState()
     {
-
+        if (SeesPlayer() && Distance2Player() > m_MaxDistanceToAttack)
+        {
+            SetChaseState();
+        }
     }
     void UpdateHitState()
     {
@@ -185,10 +187,10 @@ public class DroneEnemy : MonoBehaviour
         Vector3 l_Direction = m_Player.transform.position - transform.position; //Vector Enemy-Player
         float l_DistanceToPlayer = Distance2Player(); //Distancia
         float l_MovementDistance = l_DistanceToPlayer - m_MinDistanceToAttack;
-        
+
         //No normalizamos el vector porque és una opcion costosa de calcular.
         l_Direction /= l_DistanceToPlayer;
-        
+
         Vector3 l_ChasePosition = transform.position + l_Direction * l_MovementDistance;
 
         m_NavMeshAgent.SetDestination(l_ChasePosition);
@@ -208,12 +210,13 @@ public class DroneEnemy : MonoBehaviour
 
     private bool SeesPlayer()
     {
-        Vector3 l_Direction = m_Player.transform.position - transform.position;
-        l_Direction.Normalize();
+        Vector3 l_Direction = m_Player.transform.position+Vector3.up*1.6f - transform.position;
+        float l_DistanceToPlayer=l_Direction.magnitude;
+        l_Direction/= l_DistanceToPlayer;
         bool l_IsOnCone = Vector3.Dot(transform.forward, l_Direction) >= Mathf.Cos(m_ConeAngle * Mathf.Deg2Rad * 0.5f);
 
         Ray l_Ray = new Ray(m_Eyes.position, l_Direction);
-        if (l_IsOnCone && Physics.Raycast(l_Ray, m_MaxDistanceToRaycast, m_SightLayerMask))
+        if (l_IsOnCone && !Physics.Raycast(l_Ray, l_DistanceToPlayer, m_SightLayerMask))
         {
             return true;
         }

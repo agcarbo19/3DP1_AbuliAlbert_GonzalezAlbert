@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -17, y: 22}
+  m_AnchoredPosition: {x: 116, y: 44}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &143567830
@@ -92,8 +92,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 42
+  m_fontSizeBase: 42
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 100.72656, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -318,7 +318,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6220386130947291267}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PitchController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 6220386130988043547}
   - component: {fileID: 6220386130988043548}
   - component: {fileID: 6220386130988043549}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -404,7 +404,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 3639
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 6220386131328991312}
   - component: {fileID: 6220386131328991316}
   - component: {fileID: 6220386131328991315}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -471,7 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77b152e93d2bdc7418514175821de785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CharacterController: {fileID: 0}
+  m_CharacterController: {fileID: 6220386131328991315}
   m_GameController: {fileID: 0}
   m_Camera: {fileID: 6220386130988043548}
   m_PitchController: {fileID: 6220386130947291267}
@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 6220386131870122135}
   - component: {fileID: 6220386131870122136}
   - component: {fileID: 6220386131870122137}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +630,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6220386131882558352}
   - component: {fileID: 6220386131882558575}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: WeaponController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -672,13 +672,13 @@ MonoBehaviour:
   m_NextTimeToFire: 0
   m_Camera: {fileID: 6220386130988043548}
   m_GameController: {fileID: 0}
-  m_WeaponFlash: {fileID: 9051987068644316181, guid: 9cdbf761039c78d4d8ec247c556eaa38, type: 3}
+  m_WeaponFlash: {fileID: 6119318549393897296}
   m_SmokeImpact: {fileID: 2414069906867025286, guid: 10ca300c18d6a554ea639d63b051ad9d, type: 3}
   m_ImpactEffect: {fileID: 5729503221851691775, guid: c516b9dae976e3a45af988bce08530e6, type: 3}
   m_Player: {fileID: 6220386131328991316}
   m_ShootLayerMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 1079
   m_HitCollisionParticlesPrefab: {fileID: 6393587165461224915, guid: 304f3a103d9a5a640bc6c16a4978f4f1, type: 3}
   m_MaxDistance: 150
   m_WeaponAnimation: {fileID: 0}
@@ -695,7 +695,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5005594206649174159}
   - component: {fileID: 599107379329037911}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -728,8 +728,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.5363316, b: 0.08962262, a: 1}
-  m_Intensity: 1
-  m_Range: 0.1
+  m_Intensity: 2
+  m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -784,9 +784,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6220386131882558352}
     m_Modifications:
+    - target: {fileID: 9051987068644316181, guid: 9cdbf761039c78d4d8ec247c556eaa38, type: 3}
+      propertyPath: LightsModule.ratio
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 9161443354199243229, guid: 9cdbf761039c78d4d8ec247c556eaa38, type: 3}
       propertyPath: m_Name
       value: FlashEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 9161443354199243229, guid: 9cdbf761039c78d4d8ec247c556eaa38, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 9164337388386845983, guid: 9cdbf761039c78d4d8ec247c556eaa38, type: 3}
       propertyPath: m_LocalPosition.x
@@ -834,6 +842,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9cdbf761039c78d4d8ec247c556eaa38, type: 3}
+--- !u!198 &6119318549393897296 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 9051987068644316181, guid: 9cdbf761039c78d4d8ec247c556eaa38, type: 3}
+  m_PrefabInstance: {fileID: 2986785451449099077}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6223259761166296666 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9164337388386845983, guid: 9cdbf761039c78d4d8ec247c556eaa38, type: 3}
@@ -846,9 +859,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6220386131882558352}
     m_Modifications:
+    - target: {fileID: 1127061155119796, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263699106408682, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1279087567999658, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 1294672646082164, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
       propertyPath: m_Name
       value: Heavy_08
+      objectReference: {fileID: 0}
+    - target: {fileID: 1294672646082164, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1361264557881328, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440815593833642, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609007915154802, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874023299526932, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4166463531722480, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
       propertyPath: m_LocalPosition.x
