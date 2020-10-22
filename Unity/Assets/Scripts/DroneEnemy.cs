@@ -49,14 +49,6 @@ public class DroneEnemy : MonoBehaviour
 
     void Update()
     {
-        #region Gizmo Cono Vision
-        float l_Angle = m_ConeAngle * Mathf.Deg2Rad;
-        Vector3 l_dirRight = (transform.forward * Mathf.Cos(l_Angle) + transform.right * Mathf.Sin(l_Angle)).normalized;
-        Vector3 l_dirLeft = (transform.forward * Mathf.Cos(l_Angle) - transform.right * Mathf.Sin(l_Angle)).normalized;
-        Debug.DrawRay(m_Eyes.transform.position, l_dirRight * 5, Color.red);
-        Debug.DrawRay(m_Eyes.transform.position, l_dirLeft * 5, Color.red);
-        #endregion
-
         m_CurrentTime += Time.deltaTime;
         switch (m_State)
         {
@@ -173,10 +165,10 @@ public class DroneEnemy : MonoBehaviour
         Vector3 l_Direction = m_Player.transform.position - transform.position; //Vector Enemy-Player
         float l_DistanceToPlayer = l_Direction.magnitude; //Distancia
         float l_MovementDistance = l_DistanceToPlayer - m_MinDistanceToAttack;
-
+        
         //No normalizamos el vector porque és una opcion costosa de calcular.
         l_Direction /= l_DistanceToPlayer;
-
+        
         Vector3 l_ChasePosition = transform.position + l_Direction * l_MovementDistance;
 
         m_NavMeshAgent.SetDestination(l_ChasePosition);
@@ -201,13 +193,14 @@ public class DroneEnemy : MonoBehaviour
         bool l_IsOnCone = Vector3.Dot(transform.forward, l_Direction) >= Mathf.Cos(m_ConeAngle * Mathf.Deg2Rad * 0.5f);
 
         Ray l_Ray = new Ray(m_Eyes.position, l_Direction);
-
         if (l_IsOnCone && Physics.Raycast(l_Ray, m_MaxDistanceToRaycast, m_SightLayerMask))
         {
             return false;
         }
 
         return true;
+
+        //LayerMask yes to all menos al player y enemigos.
     }
 
     private bool HearsPlayer()
