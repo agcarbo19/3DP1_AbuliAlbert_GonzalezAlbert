@@ -28,6 +28,7 @@ public class DroneEnemy : MonoBehaviour
     public float m_MaxDistanceToPatrol = 15f;
     public float m_ConeAngle = 60f;
     public float m_LerpAttackRotation = 0.6f;
+    public float m_Timer = 0;
     public FPSController m_Player;
     public List<Transform> m_Waypoints;
     int m_CurrentWaypointId = 0;
@@ -49,14 +50,14 @@ public class DroneEnemy : MonoBehaviour
     void Update()
     {
         #region Gizmo Cono Vision
-        float l_Angle = m_ConeAngle * Mathf.Deg2Rad;
+        float l_Angle = (m_ConeAngle / 2) * Mathf.Deg2Rad;
         Vector3 l_dirRight = (transform.forward * Mathf.Cos(l_Angle) + transform.right * Mathf.Sin(l_Angle)).normalized;
         Vector3 l_dirLeft = (transform.forward * Mathf.Cos(l_Angle) - transform.right * Mathf.Sin(l_Angle)).normalized;
-        Debug.DrawRay(m_Eyes.transform.position, l_dirRight * 5, Color.red);
-        Debug.DrawRay(m_Eyes.transform.position, l_dirLeft * 5, Color.red);
+        Debug.DrawRay(m_Eyes.transform.position, l_dirRight * m_MaxDistanceToPatrol, Color.red);
+        Debug.DrawRay(m_Eyes.transform.position, l_dirLeft * m_MaxDistanceToPatrol, Color.red);
         #endregion
 
-        Debug.Log(m_State);
+        //Debug.Log(m_State);
 
         m_CurrentTime += Time.deltaTime;
         switch (m_State)
@@ -107,9 +108,16 @@ public class DroneEnemy : MonoBehaviour
     }
     void UpdateAlertState()
     {
+        m_Timer += Time.deltaTime;
+        LookingForPlayer();
         if (SeesPlayer())
         {
             SetChaseState();
+        }
+        if (m_Timer >= 30f)
+        {
+            m_Timer = 0;
+            SetPatrolState();
         }
     }
     void UpdateChaseState()
@@ -118,7 +126,7 @@ public class DroneEnemy : MonoBehaviour
         {
             SetAttackState();
         }
-        if (!SeesPlayer())
+        if (!SeesPlayer() || Distance2Player() > m_MaxDistanceToPatrol)
         {
             SetAlertState();
         }
@@ -151,17 +159,20 @@ public class DroneEnemy : MonoBehaviour
     {
         m_State = TState.PATROL;
         m_CurrentTime = 0f;
+        GetComponentInChildren<Light>().color = Color.white;
         MoveToNextPatrolPosition();
     }
     void SetAlertState()
     {
         m_State = TState.ALERT;
         m_CurrentTime = 0f;
+        GetComponentInChildren<Light>().color = Color.yellow;
     }
     void SetChaseState()
     {
         m_State = TState.CHASE;
         m_CurrentTime = 0f;
+        GetComponentInChildren<Light>().color = Color.red;
         SetNextChasePosition();
     }
     void SetAttackState()
@@ -210,12 +221,16 @@ public class DroneEnemy : MonoBehaviour
 
     private bool SeesPlayer()
     {
-        Vector3 l_Direction = m_Player.transform.position+Vector3.up*1.6f - transform.position;
-        float l_DistanceToPlayer=l_Direction.magnitude;
-        l_Direction/= l_DistanceToPlayer;
+        Vector3 l_Direction = (m_Player.transform.position + Vector3.up * 1.6f) - transform.position;
+        float l_DistanceToPlayer = l_Direction.magnitude;
+        l_Direction /= l_DistanceToPlayer;
+        Debug.DrawRay(m_Eyes.position, l_Direction * m_MaxDistanceToPatrol, Color.blue);
         bool l_IsOnCone = Vector3.Dot(transform.forward, l_Direction) >= Mathf.Cos(m_ConeAngle * Mathf.Deg2Rad * 0.5f);
-
         Ray l_Ray = new Ray(m_Eyes.position, l_Direction);
+
+        if (l_DistanceToPlayer > m_MaxDistanceToPatrol)
+            return false;
+
         if (l_IsOnCone && !Physics.Raycast(l_Ray, l_DistanceToPlayer, m_SightLayerMask))
         {
             return true;
@@ -236,4 +251,8 @@ public class DroneEnemy : MonoBehaviour
         return l_Direction.magnitude; //Distancia
     }
 
+    private void LookingForPlayer()
+    {
+        transform.Rotate(new Vector3(0f, 360f, 0f), 30f * Time.deltaTime);
+    }
 }
