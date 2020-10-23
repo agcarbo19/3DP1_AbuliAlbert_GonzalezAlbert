@@ -7,8 +7,18 @@ public class LifeItem : Item
     public int m_LifePoints;
     public override void Pick()
     {
-        Debug.Log("Picked life item!");
-        m_GameController.m_Player.AddLife(m_LifePoints);
-        Destroy();
+        if (m_GameController.m_Player.GetLife() < m_GameController.m_Player.m_MaxLife)
+        {
+            int l_nLife = m_GameController.m_Player.m_MaxLife - m_GameController.m_Player.GetLife();
+            if (l_nLife > m_LifePoints)
+            {
+                m_GameController.m_Player.AddLife(m_LifePoints);
+            }
+            else
+            {
+                m_GameController.m_Player.AddLife(l_nLife);
+            }
+            Destroy();
+        }
     }
 }

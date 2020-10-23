@@ -93,12 +93,12 @@ public class WeaponController : MonoBehaviour
         if (l_nAmmo > m_Player.GetAmmo())
         {
             m_ActualBulletsInMag += m_Player.GetAmmo();
-            m_Player.RemoveAmmo(m_Player.GetAmmo());            
+            m_Player.RemoveAmmo(m_Player.GetAmmo());
         }
         else
         {
             m_ActualBulletsInMag += l_nAmmo;
-            m_Player.RemoveAmmo(l_nAmmo);           
+            m_Player.RemoveAmmo(l_nAmmo);
         }
 
     }
