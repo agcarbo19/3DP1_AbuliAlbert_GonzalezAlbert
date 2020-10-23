@@ -26,9 +26,12 @@ public class FPSController : MonoBehaviour
     public float m_RunSpeedMultiplaier = 1.5f;
 
     [Header("HUD")]
-    public int m_Life = 100;
-    public int m_Ammo = 100;
-    public int m_Shield = 100;
+    public int m_Life;
+    public int m_MaxLife = 100;
+    public int m_Ammo;
+    public int m_MaxAmmo = 200;
+    public int m_Shield;
+    public int m_MaxShield = 100;
 
     [Header("Bools")]
     public bool m_InvertVerticalAxis = true;
@@ -56,6 +59,11 @@ public class FPSController : MonoBehaviour
     public float m_JumpThresholdSinceLastGround = 0.2f;
     public float m_FallMultiplier = 1.01f;
 
+    [Header("Respawn")]
+    public Vector3 m_RespawnPoint;
+    //public Transform m_RespawnZone1;
+    //public Transform m_RespawnZone2;
+
     #endregion
 
     private void Awake()
@@ -69,6 +77,10 @@ public class FPSController : MonoBehaviour
         m_Pitch = m_PitchController.rotation.eulerAngles.x;
         m_VerticalSpeed = 0.0f;
         Cursor.lockState = CursorLockMode.Locked;
+        m_Life = m_MaxLife;
+        m_Ammo = m_MaxAmmo;
+        m_Shield = m_MaxShield;
+        m_RespawnPoint = transform.position;
     }
 
     void Update()
@@ -255,6 +267,32 @@ public class FPSController : MonoBehaviour
         {
             other.GetComponent<Item>().Pick();
         }
+
+        if (other.tag == "DeadZone")
+        {
+            KillPlayer();
+        }
+
+        if(other.tag == "RespawnZone")
+        {
+            m_RespawnPoint = other.GetComponentInParent<Transform>().position;
+        }
+    }
+    public void KillPlayer()
+    {
+        Debug.Log("DEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAD");
+        m_Life = 0;
+        Respawn(m_RespawnPoint);
+        //m_GameController.RestartGame();
+    }
+
+    public void Respawn(Vector3 RespawnPosition)
+    {
+        gameObject.transform.position = RespawnPosition;
+        m_Life = m_MaxLife;
+        m_Ammo = m_MaxAmmo;
+        m_GameController.m_Weapon.m_ActualBulletsInMag = m_GameController.m_Weapon.m_MaxMagSize;
+        m_Shield = m_MaxShield;       
     }
 
     #region Item Functions

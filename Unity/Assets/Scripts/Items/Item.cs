@@ -7,7 +7,7 @@ public class Item : MonoBehaviour
     protected GameController m_GameController;
     void Start()
     {
-        m_GameController = GameObject.FindObjectOfType<GameController>();  
+        m_GameController = GameObject.FindObjectOfType<GameController>();
     }
 
     public virtual void Pick()

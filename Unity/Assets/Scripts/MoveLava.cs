@@ -14,6 +14,6 @@ public class MoveLava : MonoBehaviour
     void Update()
     {
         float l_Movement = Time.time * m_LavaSpeed;
-        m_renderer.material.SetTextureOffset("_BaseMap", new Vector2(l_Movement, 0.0f));
+        m_renderer.material.SetTextureOffset("_MainTex", new Vector2(l_Movement, 0.0f));
     }
 }

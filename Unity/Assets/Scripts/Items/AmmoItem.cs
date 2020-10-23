@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class AmmoItem : Item
 {
-    public int m_AmmoRounds;
+    public int m_AddAmmoRounds;
+
     public override void Pick()
     {
-        Debug.Log("Picked Ammo item!");
-        m_GameController.m_Player.AddAmmo(m_AmmoRounds);
-        Destroy();
+        if (m_GameController.m_Player.GetAmmo() < m_GameController.m_Player.m_MaxAmmo)
+        {
+            int l_nAmmo = m_GameController.m_Player.m_MaxAmmo - m_GameController.m_Player.GetAmmo();
+            if (l_nAmmo > m_AddAmmoRounds)
+            {
+                m_GameController.m_Player.AddAmmo(m_AddAmmoRounds);
+            }
+            else
+            {
+                m_GameController.m_Player.AddAmmo(l_nAmmo);
+            }
+
+            Destroy();
+        }
     }
 }
 
