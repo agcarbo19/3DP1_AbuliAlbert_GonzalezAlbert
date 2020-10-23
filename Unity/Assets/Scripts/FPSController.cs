@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FPSController : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class FPSController : MonoBehaviour
     public int m_MaxAmmo = 200;
     public int m_Shield;
     public int m_MaxShield = 100;
+    public Image m_BloodScreen;
+    private float m_alphaBloodScreen=0f;
 
     [Header("Bools")]
     public bool m_InvertVerticalAxis = true;
@@ -259,6 +262,13 @@ public class FPSController : MonoBehaviour
             m_OnGround = true;
         #endregion
 
+        #region HUD
+        m_BloodScreen.color = new Color(1f, 0, 0, m_alphaBloodScreen);
+        #endregion
+        if (m_alphaBloodScreen > 0)
+        {
+            m_alphaBloodScreen -= 1f * Time.deltaTime;
+        }
     }
 
     public void OnTriggerEnter(Collider other)
@@ -273,7 +283,7 @@ public class FPSController : MonoBehaviour
             KillPlayer();
         }
 
-        if(other.tag == "RespawnZone")
+        if (other.tag == "RespawnZone")
         {
             m_RespawnPoint = other.GetComponentInParent<Transform>().position;
         }
@@ -292,7 +302,29 @@ public class FPSController : MonoBehaviour
         m_Life = m_MaxLife;
         m_Ammo = m_MaxAmmo;
         m_GameController.m_Weapon.m_ActualBulletsInMag = m_GameController.m_Weapon.m_MaxMagSize;
-        m_Shield = m_MaxShield;       
+        m_Shield = m_MaxShield;
+    }
+
+    public void HurtingPlayer(int Damage)
+    {
+        m_alphaBloodScreen = 0.7f;
+        if (GetShield() > 0)
+        {
+            if (GetShield() - (Damage * 0.75f) <= 0)
+            {
+                RemoveShield(GetShield());
+            }
+            else
+            {
+                RemoveShield((int)(Damage * 0.75f));
+            }
+
+            RemoveLife((int)(Damage * 0.25f));
+        }
+        else
+        {
+            RemoveLife(Damage);
+        }
     }
 
     #region Item Functions

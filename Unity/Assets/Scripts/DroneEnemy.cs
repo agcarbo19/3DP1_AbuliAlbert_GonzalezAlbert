@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class DroneEnemy : MonoBehaviour
 {
-
+    #region Parameters
     enum TState
     {
         IDLE,
@@ -16,7 +16,6 @@ public class DroneEnemy : MonoBehaviour
         HIT,
         DIE
     }
-
     public Transform m_Target;
     NavMeshAgent m_NavMeshAgent;
     TState m_State;
@@ -29,23 +28,29 @@ public class DroneEnemy : MonoBehaviour
     public float m_ConeAngle = 60f;
     public float m_LerpAttackRotation = 0.6f;
     public float m_Timer = 0;
+    public float m_FireRate = 1.0f;
+    public float m_NextTimeToFire = 0.0f;
+    public int m_Damage = 20;
+    public ParticleSystem m_WeaponFlash;
     public FPSController m_Player;
     public List<Transform> m_Waypoints;
+    private Animation m_animation;
+    public AnimationClip m_Hit;
     int m_CurrentWaypointId = 0;
-
+    public float m_Health = 50.0f;
+    public ParticleSystem m_DeadExposion;
     public Transform m_Eyes;
     public LayerMask m_SightLayerMask;
-
+    #endregion
     private void Awake()
     {
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
+        m_animation = GetComponent<Animation>();
     }
-
     void Start()
     {
         SetIdleState();
     }
-
 
     void Update()
     {
@@ -57,7 +62,10 @@ public class DroneEnemy : MonoBehaviour
         Debug.DrawRay(m_Eyes.transform.position, l_dirLeft * m_MaxDistanceToPatrol, Color.red);
         #endregion
 
-        //Debug.Log(m_State);
+        if (m_Health <= 0f)
+        {
+            SetDieState();
+        }
 
         m_CurrentTime += Time.deltaTime;
         switch (m_State)
@@ -94,7 +102,6 @@ public class DroneEnemy : MonoBehaviour
     }
     void UpdatePatrolState()
     {
-        //Falta millorar!
         if (!m_NavMeshAgent.hasPath && m_NavMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
             MoveToNextPatrolPosition();
         if (HearsPlayer())
@@ -105,6 +112,7 @@ public class DroneEnemy : MonoBehaviour
         {
             SetChaseState();
         }
+
     }
     void UpdateAlertState()
     {
@@ -133,18 +141,42 @@ public class DroneEnemy : MonoBehaviour
     }
     void UpdateAttackState()
     {
-        if (SeesPlayer() && Distance2Player() > m_MaxDistanceToAttack)
+        if (Time.time >= m_NextTimeToFire)
         {
-            SetChaseState();
+            m_NextTimeToFire = Time.time + 1f / m_FireRate;
+            if (SeesPlayer())
+                Shoot();
         }
+
+        if (SeesPlayer() && Distance2Player() > m_MaxDistanceToAttack)
+            SetChaseState();
+
+        if (!SeesPlayer())
+            SetAlertState();
+
     }
     void UpdateHitState()
     {
+        m_animation.clip = m_Hit;
+        m_animation.Play();
+
+        if (!SeesPlayer())
+        {
+            SetAlertState();
+        }
+        else
+        {
+            SetChaseState();
+        }
 
     }
     void UpdateDieState()
     {
-
+        if (m_DeadExposion != null)
+        {
+            GameObject.Instantiate(m_DeadExposion, new Vector3(transform.position.x, 2f, transform.position.z), Quaternion.identity);
+        }
+        Destroy(gameObject);
     }
     #endregion
 
@@ -255,4 +287,30 @@ public class DroneEnemy : MonoBehaviour
     {
         transform.Rotate(new Vector3(0f, 360f, 0f), 30f * Time.deltaTime);
     }
+
+    private void Shoot()
+    {
+        m_WeaponFlash.Play();
+        Vector3 l_Direction = m_Player.transform.position - transform.position;
+        l_Direction.Normalize();
+        Ray l_Ray = new Ray(m_Eyes.position, l_Direction);
+        RaycastHit l_RaycastHit;
+
+        if (Physics.Raycast(l_Ray, out l_RaycastHit, m_MaxDistanceToAttack))
+        {
+            FPSController target = l_RaycastHit.transform.GetComponentInParent<FPSController>();
+            if (target != null)
+            {
+                target.HurtingPlayer(m_Damage);
+            }
+        }
+
+    }
+    public void TakeDamage(float damage)
+    {
+        m_Health -= damage;
+        SetHitState();
+
+    }
+
 }

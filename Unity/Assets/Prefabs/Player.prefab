@@ -243,6 +243,7 @@ RectTransform:
   - {fileID: 143567828}
   - {fileID: 6943977982392265930}
   - {fileID: 4782480249261969339}
+  - {fileID: 2560467492816107658}
   m_Father: {fileID: 6220386131328991312}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -403,6 +404,81 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &2956257663583231832
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2560467492816107658}
+  - component: {fileID: 8377287872113133152}
+  - component: {fileID: 3589073521750733953}
+  m_Layer: 5
+  m_Name: Blood
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2560467492816107658
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2956257663583231832}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 480592670}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8377287872113133152
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2956257663583231832}
+  m_CullTransparentMesh: 0
+--- !u!114 &3589073521750733953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2956257663583231832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.64705884, g: 0, b: 0, a: 0.78431374}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &6220386130947291268
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,9 +641,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77b152e93d2bdc7418514175821de785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CharacterController: {fileID: 6220386131328991315}
+  m_CharacterController: {fileID: 0}
   m_GameController: {fileID: 0}
-  m_WeaponController: {fileID: 0}
   m_Camera: {fileID: 6220386130988043548}
   m_PitchController: {fileID: 6220386130947291267}
   m_MinPitch: -35
@@ -584,6 +659,7 @@ MonoBehaviour:
   m_MaxAmmo: 100
   m_Shield: 100
   m_MaxShield: 100
+  m_BloodScreen: {fileID: 3589073521750733953}
   m_InvertVerticalAxis: 1
   m_InvertHorizontalAxis: 0
   m_OnGround: 0
@@ -768,7 +844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Damage: 10
-  m_FireRate: 15
+  m_FireRate: 10
   m_ImpactForce: 30
   m_NextTimeToFire: 0
   m_MaxMagSize: 30
