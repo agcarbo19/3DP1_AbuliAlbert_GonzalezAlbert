@@ -680,7 +680,7 @@ MonoBehaviour:
   m_TimeSinceLastGround: 0
   m_JumpThresholdSinceLastGround: 0.2
   m_FallMultiplier: 1.01
-  m_RespawnPoint: {x: 0, y: 0, z: 0}
+  m_RespawnPoint: {fileID: 0}
 --- !u!143 &6220386131328991315
 CharacterController:
   m_ObjectHideFlags: 0

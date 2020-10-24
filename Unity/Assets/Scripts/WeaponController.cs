@@ -105,13 +105,13 @@ public class WeaponController : MonoBehaviour
 
     private void CreateShootHitParticle(Vector3 Position, Vector3 Normal, bool target, bool terrain)
     {
-        GameObject.Instantiate(m_HitCollisionParticlesPrefab, Position, Quaternion.LookRotation(Normal) * Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.value * 180.0f), m_GameController.m_DestroyObjects);
         if (target)
         {
             GameObject.Instantiate(m_ImpactEffect, Position, Quaternion.LookRotation(Normal) * Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.value * 180.0f), m_GameController.m_DestroyObjects);
         }
         else
         {
+            GameObject.Instantiate(m_HitCollisionParticlesPrefab, Position, Quaternion.LookRotation(Normal) * Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.value * 180.0f), m_GameController.m_DestroyObjects);
             if (terrain == false)
             {
                 GameObject.Instantiate(m_ImpactEffect, Position, Quaternion.LookRotation(Normal) * Quaternion.Euler(0.0f, 0.0f, UnityEngine.Random.value * 180.0f), m_GameController.m_DestroyObjects);

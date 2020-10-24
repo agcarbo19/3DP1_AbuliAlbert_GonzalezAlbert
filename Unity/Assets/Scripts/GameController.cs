@@ -15,8 +15,8 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        m_Enemies.Add(FindObjectOfType<DroneEnemy>());
     }
-
     private void Update()
     {
         m_TextAmmo.text = m_Weapon.GetBullets().ToString();
@@ -24,9 +24,14 @@ public class GameController : MonoBehaviour
         m_TextShield.text = m_Player.GetShield().ToString();
     }
 
-    //public void RestartGame()
-    //{
-    //    m_Player.Respawn(m_RespawnPoint);
-    //    //m_Enemies.Respawn();
-    //}
+    public IEnumerator RestartGame(Transform RespawnPoint)
+    {
+        m_Player.transform.position = RespawnPoint.position;
+        yield return new WaitForSeconds(.5f);
+        m_Player.RePatchPlayer();
+        //for(int i = 0; i < m_Enemies.Count; i++)
+        //{
+        //    m_Enemies[i].Respawn();
+        //}
+    }
 }

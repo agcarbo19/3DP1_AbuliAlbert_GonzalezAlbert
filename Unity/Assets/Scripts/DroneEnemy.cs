@@ -40,7 +40,9 @@ public class DroneEnemy : MonoBehaviour
     public float m_Health = 50.0f;
     public ParticleSystem m_DeadExposion;
     public Transform m_Eyes;
+    private Vector3 m_InitialPos;
     public LayerMask m_SightLayerMask;
+    public GameObject m_Drops;
     #endregion
     private void Awake()
     {
@@ -50,8 +52,8 @@ public class DroneEnemy : MonoBehaviour
     void Start()
     {
         SetIdleState();
+        m_InitialPos = transform.position;
     }
-
     void Update()
     {
         #region Gizmo Cono Vision
@@ -172,9 +174,14 @@ public class DroneEnemy : MonoBehaviour
     }
     void UpdateDieState()
     {
+        if (Random.Range(0, 3) == 2)
+        {
+            if (m_Drops != null)
+                GameObject.Instantiate(m_Drops, new Vector3(transform.position.x, 0.5f, transform.position.z), Quaternion.identity);
+        }
         if (m_DeadExposion != null)
         {
-            GameObject.Instantiate(m_DeadExposion, new Vector3(transform.position.x, 2f, transform.position.z), Quaternion.identity);
+            GameObject.Instantiate(m_DeadExposion, new Vector3(transform.position.x, transform.position.y + 2f, transform.position.z), Quaternion.identity);
         }
         Destroy(gameObject);
     }
@@ -239,7 +246,6 @@ public class DroneEnemy : MonoBehaviour
         m_NavMeshAgent.SetDestination(l_ChasePosition);
         m_NavMeshAgent.isStopped = false;
     }
-
     void MoveToNextPatrolPosition()
     {
         m_NavMeshAgent.isStopped = false;
@@ -250,7 +256,6 @@ public class DroneEnemy : MonoBehaviour
             m_CurrentWaypointId = 0;
         }
     }
-
     private bool SeesPlayer()
     {
         Vector3 l_Direction = (m_Player.transform.position + Vector3.up * 1.6f) - transform.position;
@@ -270,24 +275,20 @@ public class DroneEnemy : MonoBehaviour
 
         return false;
     }
-
     private bool HearsPlayer()
     {
         float l_DistanceToPlayer = Vector3.Distance(m_Player.transform.position, transform.position);
         return l_DistanceToPlayer < m_MaxDistanceToAlert;
     }
-
     private float Distance2Player()
     {
         Vector3 l_Direction = m_Player.transform.position - transform.position; //Vector Enemy-Player
         return l_Direction.magnitude; //Distancia
     }
-
     private void LookingForPlayer()
     {
         transform.Rotate(new Vector3(0f, 360f, 0f), 30f * Time.deltaTime);
     }
-
     private void Shoot()
     {
         m_WeaponFlash.Play();
@@ -312,5 +313,8 @@ public class DroneEnemy : MonoBehaviour
         SetHitState();
 
     }
-
+    public void Respawn()
+    {
+        transform.position = m_InitialPos;
+    }
 }

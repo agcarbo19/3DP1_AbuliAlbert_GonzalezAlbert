@@ -34,7 +34,7 @@ public class FPSController : MonoBehaviour
     public int m_Shield;
     public int m_MaxShield = 100;
     public Image m_BloodScreen;
-    private float m_alphaBloodScreen=0f;
+    private float m_alphaBloodScreen = 0f;
 
     [Header("Bools")]
     public bool m_InvertVerticalAxis = true;
@@ -63,9 +63,11 @@ public class FPSController : MonoBehaviour
     public float m_FallMultiplier = 1.01f;
 
     [Header("Respawn")]
-    public Vector3 m_RespawnPoint;
-    //public Transform m_RespawnZone1;
-    //public Transform m_RespawnZone2;
+    public Transform m_RespawnPoint;
+    public Transform m_RespawnZone0;
+    public Transform m_RespawnZone1;
+    public Transform m_RespawnZone2;
+
 
     #endregion
 
@@ -83,7 +85,7 @@ public class FPSController : MonoBehaviour
         m_Life = m_MaxLife;
         m_Ammo = m_MaxAmmo;
         m_Shield = m_MaxShield;
-        m_RespawnPoint = transform.position;
+        m_RespawnPoint = m_RespawnZone0;
     }
 
     void Update()
@@ -269,6 +271,10 @@ public class FPSController : MonoBehaviour
         {
             m_alphaBloodScreen -= 1f * Time.deltaTime;
         }
+        if (m_Life <= 0)
+        {
+            KillPlayer();
+        }
     }
 
     public void OnTriggerEnter(Collider other)
@@ -285,24 +291,25 @@ public class FPSController : MonoBehaviour
 
         if (other.tag == "RespawnZone")
         {
-            m_RespawnPoint = other.GetComponentInParent<Transform>().position;
+            if (other.name == "RespawnZone1Col")
+                m_RespawnPoint = m_RespawnZone1;
+            if (other.name == "RespawnZone2Col")
+                m_RespawnPoint = m_RespawnZone2;
         }
     }
     public void KillPlayer()
     {
-        Debug.Log("DEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAD");
         m_Life = 0;
-        Respawn(m_RespawnPoint);
-        //m_GameController.RestartGame();
+        StartCoroutine(m_GameController.RestartGame(m_RespawnPoint));
     }
 
-    public void Respawn(Vector3 RespawnPosition)
+    public void RePatchPlayer()
     {
-        gameObject.transform.position = RespawnPosition;
+        m_alphaBloodScreen = 0f;
         m_Life = m_MaxLife;
         m_Ammo = m_MaxAmmo;
-        m_GameController.m_Weapon.m_ActualBulletsInMag = m_GameController.m_Weapon.m_MaxMagSize;
         m_Shield = m_MaxShield;
+        m_GameController.m_Weapon.m_ActualBulletsInMag = m_GameController.m_Weapon.m_MaxMagSize;
     }
 
     public void HurtingPlayer(int Damage)
