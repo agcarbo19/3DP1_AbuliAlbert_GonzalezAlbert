@@ -9,12 +9,10 @@ public class GameController : MonoBehaviour
     public WeaponController m_Weapon;
     public List<DroneEnemy> m_Enemies;
     public Transform m_DestroyObjects;
-    public AudioSource m_Music;
 
     private void Start()
     {
         m_Enemies.Add(FindObjectOfType<DroneEnemy>());
-        m_Music.Play();
     }
 
     public IEnumerator RestartGame(Transform RespawnPoint)

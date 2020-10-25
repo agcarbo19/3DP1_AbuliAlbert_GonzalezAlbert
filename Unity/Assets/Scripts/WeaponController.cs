@@ -29,10 +29,6 @@ public class WeaponController : MonoBehaviour
     [Header("Reloading")]
     public KeyCode m_ReloadKey;
 
-    [Header("Sounds")]
-    public AudioSource m_ShootSound;
-
-
     private void Start()
     {
         m_ActualBulletsInMag = m_MaxMagSize;
@@ -66,7 +62,6 @@ public class WeaponController : MonoBehaviour
         m_Animator.SetTrigger("IsShooting");
         Ray l_Ray = m_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f));
         RaycastHit l_RaycastHit;
-        m_ShootSound.Play();
         m_WeaponFlash.Play();
 
         if (Physics.Raycast(l_Ray, out l_RaycastHit, m_MaxDistance, m_ShootLayerMask.value))

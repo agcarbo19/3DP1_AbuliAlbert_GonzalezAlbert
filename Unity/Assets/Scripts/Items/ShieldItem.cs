@@ -9,7 +9,6 @@ public class ShieldItem : Item
     {
         if (m_GameController.m_Player.GetShield() < m_GameController.m_Player.m_MaxShield)
         {
-            m_GameController.m_Player.m_ItemSound.Play();
             int l_nShield = m_GameController.m_Player.m_MaxShield - m_GameController.m_Player.GetShield();
             if (l_nShield > m_ShieldPoints)
             {

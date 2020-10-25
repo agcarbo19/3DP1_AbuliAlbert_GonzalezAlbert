@@ -10,7 +10,6 @@ public class AmmoItem : Item
     {
         if (m_GameController.m_Player.GetAmmo() < m_GameController.m_Player.m_MaxAmmo)
         {
-            m_GameController.m_Player.m_ItemSound.Play();
             int l_nAmmo = m_GameController.m_Player.m_MaxAmmo - m_GameController.m_Player.GetAmmo();
             if (l_nAmmo > m_AddAmmoRounds)
             {
