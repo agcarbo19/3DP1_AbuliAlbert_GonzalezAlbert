@@ -32,7 +32,7 @@ public class DroneEnemy : MonoBehaviour
     public float m_NextTimeToFire = 0.0f;
     public int m_Damage = 20;
     public ParticleSystem m_WeaponFlash;
-    public FPSController m_Player;
+    public GameController m_GameController;
     public List<Transform> m_Waypoints;
     private Animation m_animation;
     public AnimationClip m_Hit;
@@ -48,6 +48,7 @@ public class DroneEnemy : MonoBehaviour
     {
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
         m_animation = GetComponent<Animation>();
+        m_GameController = FindObjectOfType<GameController>();
     }
     void Start()
     {
@@ -234,7 +235,7 @@ public class DroneEnemy : MonoBehaviour
 
     void SetNextChasePosition()
     {
-        Vector3 l_Direction = m_Player.transform.position - transform.position; //Vector Enemy-Player
+        Vector3 l_Direction = m_GameController.m_Player.transform.position - transform.position; //Vector Enemy-Player
         float l_DistanceToPlayer = Distance2Player(); //Distancia
         float l_MovementDistance = l_DistanceToPlayer - m_MinDistanceToAttack;
 
@@ -258,7 +259,7 @@ public class DroneEnemy : MonoBehaviour
     }
     private bool SeesPlayer()
     {
-        Vector3 l_Direction = (m_Player.transform.position + Vector3.up * 1.6f) - transform.position;
+        Vector3 l_Direction = (m_GameController.m_Player.transform.position + Vector3.up * 1.6f) - transform.position;
         float l_DistanceToPlayer = l_Direction.magnitude;
         l_Direction /= l_DistanceToPlayer;
         Debug.DrawRay(m_Eyes.position, l_Direction * m_MaxDistanceToPatrol, Color.blue);
@@ -277,12 +278,12 @@ public class DroneEnemy : MonoBehaviour
     }
     private bool HearsPlayer()
     {
-        float l_DistanceToPlayer = Vector3.Distance(m_Player.transform.position, transform.position);
+        float l_DistanceToPlayer = Vector3.Distance(m_GameController.m_Player.transform.position, transform.position);
         return l_DistanceToPlayer < m_MaxDistanceToAlert;
     }
     private float Distance2Player()
     {
-        Vector3 l_Direction = m_Player.transform.position - transform.position; //Vector Enemy-Player
+        Vector3 l_Direction = m_GameController.m_Player.transform.position - transform.position; //Vector Enemy-Player
         return l_Direction.magnitude; //Distancia
     }
     private void LookingForPlayer()
@@ -292,7 +293,7 @@ public class DroneEnemy : MonoBehaviour
     private void Shoot()
     {
         m_WeaponFlash.Play();
-        Vector3 l_Direction = m_Player.transform.position - transform.position;
+        Vector3 l_Direction = m_GameController.m_Player.transform.position - transform.position;
         l_Direction.Normalize();
         Ray l_Ray = new Ray(m_Eyes.position, l_Direction);
         RaycastHit l_RaycastHit;

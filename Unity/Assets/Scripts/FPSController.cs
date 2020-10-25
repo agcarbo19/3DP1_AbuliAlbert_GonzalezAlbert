@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class FPSController : MonoBehaviour
 {
     #region Parameters
@@ -35,6 +35,9 @@ public class FPSController : MonoBehaviour
     public int m_MaxShield = 50;
     public Image m_BloodScreen;
     private float m_alphaBloodScreen = 0f;
+    public TextMeshProUGUI m_TextAmmo;
+    public TextMeshProUGUI m_TextLife;
+    public TextMeshProUGUI m_TextShield;
 
     [Header("Bools")]
     public bool m_InvertVerticalAxis = true;
@@ -74,6 +77,7 @@ public class FPSController : MonoBehaviour
     private void Awake()
     {
         m_CharacterController = GetComponent<CharacterController>();
+        m_GameController = FindObjectOfType<GameController>();
     }
 
     void Start()
@@ -266,11 +270,17 @@ public class FPSController : MonoBehaviour
 
         #region HUD
         m_BloodScreen.color = new Color(1f, 0, 0, m_alphaBloodScreen);
-        #endregion
         if (m_alphaBloodScreen > 0)
         {
             m_alphaBloodScreen -= 1f * Time.deltaTime;
         }
+
+        m_TextAmmo.text = m_GameController.m_Weapon.GetBullets().ToString() + " / " + m_Ammo.ToString();
+        m_TextLife.text = m_Life.ToString() + " / " + m_MaxLife.ToString();
+        m_TextShield.text = m_Shield.ToString() + " / " + m_MaxShield.ToString();
+
+        #endregion
+
         if (m_Life <= 0)
         {
             KillPlayer();

@@ -1934,10 +1934,6 @@ PrefabInstance:
       propertyPath: m_GameController
       value: 
       objectReference: {fileID: 2007887141}
-    - target: {fileID: 1121680472936568102, guid: bdf5aa27b638d854aaa55e955426b522, type: 3}
-      propertyPath: m_JumpSpeed
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 1121680472936568103, guid: bdf5aa27b638d854aaa55e955426b522, type: 3}
       propertyPath: m_Name
       value: Player

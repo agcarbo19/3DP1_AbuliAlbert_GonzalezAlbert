@@ -76,6 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Player: {fileID: 0}
   m_Weapon: {fileID: 0}
+  m_Enemies: []
   m_DestroyObjects: {fileID: 0}
   m_TextAmmo: {fileID: 0}
   m_TextLife: {fileID: 0}

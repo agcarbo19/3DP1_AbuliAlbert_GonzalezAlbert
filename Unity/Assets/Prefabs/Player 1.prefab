@@ -354,7 +354,7 @@ MonoBehaviour:
   m_PitchRotationalSpeed: 100
   m_Speed: 10
   m_VerticalSpeed: 0
-  m_JumpSpeed: 10
+  m_JumpSpeed: 5
   m_RunSpeedMultiplaier: 1.5
   m_Life: 100
   m_MaxLife: 100
@@ -363,6 +363,9 @@ MonoBehaviour:
   m_Shield: 50
   m_MaxShield: 50
   m_BloodScreen: {fileID: 7497562174692762099}
+  m_TextAmmo: {fileID: 6467804895349014183}
+  m_TextLife: {fileID: 8089360282086734125}
+  m_TextShield: {fileID: 587378804022360643}
   m_InvertVerticalAxis: 1
   m_InvertHorizontalAxis: 0
   m_OnGround: 0
