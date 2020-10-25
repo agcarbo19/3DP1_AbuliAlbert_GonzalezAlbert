@@ -126,3 +126,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShieldPoints: 50
+  m_PickUpSound: {fileID: 0}

@@ -71,6 +71,11 @@ public class FPSController : MonoBehaviour
     public Transform m_RespawnZone1;
     public Transform m_RespawnZone2;
 
+    [Header("Sounds")]
+    public AudioSource m_RunSound;
+    public AudioSource m_DamageSound;
+    public AudioSource m_ItemSound;
+
 
     #endregion
 
@@ -174,6 +179,16 @@ public class FPSController : MonoBehaviour
             l_Movement += -l_Forward;
         }
         #endregion
+
+        if (m_IsMoving)
+        {
+            if(!m_RunSound.isPlaying)
+            m_RunSound.Play();
+        }
+        else
+        {
+            m_RunSound.Stop();
+        }
 
         #region Salto
         //if (Input.GetKey(m_JumpKey) && m_TimeSinceLastGround < m_JumpThresholdSinceLastGround)
@@ -325,6 +340,7 @@ public class FPSController : MonoBehaviour
     public void HurtingPlayer(int Damage)
     {
         m_alphaBloodScreen = 0.7f;
+        m_DamageSound.Play();
         if (GetShield() > 0)
         {
             if (GetShield() - (Damage * 0.75f) <= 0)
