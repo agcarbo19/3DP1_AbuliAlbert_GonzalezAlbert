@@ -35,14 +35,16 @@ public class DummyEvent : MonoBehaviour
             m_player.m_TextScore.text = "Score: " + m_score;
             m_player.m_TextDummyTime.text = "Time left: " + m_eventTimeRemaining;
 
-            while (m_eventTimeRemaining >= 0)
+            if (m_score >= 1000)
             {
-                if (m_score >= 1000)
+                m_uiNextLevel.SetActive(true);
+
+                if (m_eventTimeRemaining <= 0)
                 {
-                    m_uiNextLevel.SetActive(true);
-                    StartCoroutine("NextLevel");
+                    SceneManager.LoadScene(1);
                 }
             }
+
         }
     }
 
@@ -50,11 +52,5 @@ public class DummyEvent : MonoBehaviour
     {
         yield return new WaitForSeconds(30);
         m_dummies.SetActive(false);
-    }
-
-    IEnumerator NextLevel()
-    {
-        yield return new WaitForSeconds(5);
-        SceneManager.LoadScene("Scene2");
     }
 }
