@@ -32,7 +32,7 @@ public class FPSController : MonoBehaviour
     public int m_Ammo;
     public int m_MaxAmmo = 200;
     public int m_Shield;
-    public int m_MaxShield = 100;
+    public int m_MaxShield = 50;
     public Image m_BloodScreen;
     private float m_alphaBloodScreen = 0f;
 

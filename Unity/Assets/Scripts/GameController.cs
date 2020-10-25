@@ -19,9 +19,9 @@ public class GameController : MonoBehaviour
     }
     private void Update()
     {
-        m_TextAmmo.text = m_Weapon.GetBullets().ToString();
-        m_TextLife.text = m_Player.GetLife().ToString();
-        m_TextShield.text = m_Player.GetShield().ToString();
+        m_TextAmmo.text = m_Weapon.GetBullets().ToString() + " / " + (m_Player.m_MaxAmmo + (m_Player.GetAmmo() - m_Player.m_MaxAmmo));
+        m_TextLife.text = m_Player.m_Life + " / " + m_Player.GetLife().ToString();
+        m_TextShield.text = m_Player.m_Shield + " / " + m_Player.GetShield().ToString();
     }
 
     public IEnumerator RestartGame(Transform RespawnPoint)
