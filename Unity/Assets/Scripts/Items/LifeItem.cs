@@ -9,6 +9,7 @@ public class LifeItem : Item
     {
         if (m_GameController.m_Player.GetLife() < m_GameController.m_Player.m_MaxLife)
         {
+            m_GameController.m_Player.m_ItemSound.Play();
             int l_nLife = m_GameController.m_Player.m_MaxLife - m_GameController.m_Player.GetLife();
             if (l_nLife > m_LifePoints)
             {

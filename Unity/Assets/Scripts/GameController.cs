@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     public WeaponController m_Weapon;
     public List<DroneEnemy> m_Enemies;
     public Transform m_DestroyObjects;
+    public AudioSource m_Music;
 
     private void Start()
     {
@@ -20,6 +21,7 @@ public class GameController : MonoBehaviour
         m_Player.transform.position = RespawnPoint.position;
         yield return new WaitForSeconds(.5f);
         m_Player.RePatchPlayer();
+        m_Music.Play();
         //for(int i = 0; i < m_Enemies.Count; i++)
         //{
         //    m_Enemies[i].Respawn();

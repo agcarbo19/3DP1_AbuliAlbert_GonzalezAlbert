@@ -40,6 +40,7 @@ public class FPSController : MonoBehaviour
     public TextMeshProUGUI m_TextShield;
     public TextMeshProUGUI m_TextScore;
     public TextMeshProUGUI m_TextDummyTime;
+    public GameObject m_GameOverCanv;
 
     [Header("Bools")]
     public bool m_InvertVerticalAxis = true;
@@ -73,6 +74,10 @@ public class FPSController : MonoBehaviour
     public Transform m_RespawnZone1;
     public Transform m_RespawnZone2;
 
+    [Header("Sounds")]
+    public AudioSource m_RunSound;
+    public AudioSource m_DamageSound;
+    public AudioSource m_ItemSound;
 
     #endregion
 
@@ -229,6 +234,16 @@ public class FPSController : MonoBehaviour
         {
             m_IsMoving = false;
         }
+
+        if (m_IsMoving)
+        {
+            if (!m_RunSound.isPlaying)
+                m_RunSound.Play();
+        }
+        else
+        {
+            m_RunSound.Stop();
+        }
         #endregion
 
         #region Correr-Sprint      
@@ -287,6 +302,14 @@ public class FPSController : MonoBehaviour
         {
             KillPlayer();
         }
+
+        if (m_GameOverCanv.activeSelf == true)
+        {
+            if (Input.GetKey(m_JumpKey))
+            {
+                Retry();
+            }
+        }
     }
 
     public void OnTriggerEnter(Collider other)
@@ -312,7 +335,16 @@ public class FPSController : MonoBehaviour
     public void KillPlayer()
     {
         m_Life = 0;
+        Time.timeScale = 0f;
+        m_GameOverCanv.SetActive(true);
+    }
+
+    public void Retry()
+    {
+        Time.timeScale = 1f;
         StartCoroutine(m_GameController.RestartGame(m_RespawnPoint));
+        m_GameOverCanv.SetActive(false);
+
     }
 
     public void RePatchPlayer()
@@ -327,6 +359,7 @@ public class FPSController : MonoBehaviour
     public void HurtingPlayer(int Damage)
     {
         m_alphaBloodScreen = 0.7f;
+        m_DamageSound.Play();
         if (GetShield() > 0)
         {
             if (GetShield() - (Damage * 0.75f) <= 0)

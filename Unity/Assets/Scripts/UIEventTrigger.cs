@@ -19,7 +19,6 @@ public class UIEventTrigger : MonoBehaviour
         {
             m_uiObject.SetActive(true);
             StartCoroutine("WaitForSec");
-            Debug.Log("Waitforsec");
 
             new WaitForSeconds(5);
         }
