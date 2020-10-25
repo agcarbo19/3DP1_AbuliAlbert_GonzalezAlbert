@@ -38,6 +38,7 @@ public class FPSController : MonoBehaviour
     public TextMeshProUGUI m_TextAmmo;
     public TextMeshProUGUI m_TextLife;
     public TextMeshProUGUI m_TextShield;
+    public GameObject m_GameOverCanv;
 
     [Header("Bools")]
     public bool m_InvertVerticalAxis = true;
@@ -300,6 +301,14 @@ public class FPSController : MonoBehaviour
         {
             KillPlayer();
         }
+
+        if (m_GameOverCanv.activeSelf == true)
+        {
+            if (Input.GetKey(m_JumpKey))
+            {
+                Retry();
+            }
+        }
     }
 
     public void OnTriggerEnter(Collider other)
@@ -325,7 +334,8 @@ public class FPSController : MonoBehaviour
     public void KillPlayer()
     {
         m_Life = 0;
-        StartCoroutine(m_GameController.RestartGame(m_RespawnPoint));
+        Time.timeScale = 0f;
+        m_GameOverCanv.SetActive(true);
     }
 
     public void RePatchPlayer()
@@ -358,6 +368,13 @@ public class FPSController : MonoBehaviour
         {
             RemoveLife(Damage);
         }
+    }
+    public void Retry()
+    {
+        Time.timeScale = 1f;
+        StartCoroutine(m_GameController.RestartGame(m_RespawnPoint));
+        m_GameOverCanv.SetActive(false);
+        
     }
 
     #region Item Functions
