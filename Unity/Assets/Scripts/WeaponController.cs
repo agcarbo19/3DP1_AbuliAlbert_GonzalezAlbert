@@ -67,9 +67,15 @@ public class WeaponController : MonoBehaviour
         if (Physics.Raycast(l_Ray, out l_RaycastHit, m_MaxDistance, m_ShootLayerMask.value))
         {
             DroneEnemy target = l_RaycastHit.transform.GetComponent<DroneEnemy>();
+            DummyTarget dummy = l_RaycastHit.transform.GetComponent<DummyTarget>();
+
             if (target != null)
             {
                 target.TakeDamage(m_Damage);
+            }
+            else if (dummy != null)
+            {
+                dummy.m_isHit = true;
             }
 
             if (l_RaycastHit.rigidbody != null)

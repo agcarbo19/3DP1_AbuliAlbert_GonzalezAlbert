@@ -38,6 +38,8 @@ public class FPSController : MonoBehaviour
     public TextMeshProUGUI m_TextAmmo;
     public TextMeshProUGUI m_TextLife;
     public TextMeshProUGUI m_TextShield;
+    public TextMeshProUGUI m_TextScore;
+    public TextMeshProUGUI m_TextDummyTime;
 
     [Header("Bools")]
     public bool m_InvertVerticalAxis = true;
